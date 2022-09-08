@@ -1,17 +1,13 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import AddRestaurant from './AddRestaurant';
 import Restaurant from './Restaurant';
-import { myContext } from '../src/Context';
+// import { myContext } from '../src/Context';
 
 const RestaurantContainer = (props) => {
-<<<<<<< HEAD
 
-  const user = useContext(myContext);
+  // const user = useContext(myContext);
 
-  const { city, cityList, setCity } = props;
-=======
-  const { city, cityList, setCity, cuisine, cuisineList, setCuisine} = props;
->>>>>>> dev
+  const { city, cityList, setCity, cuisine } = props;
   //* Bring in the list of restaurants and update restaurant container
   //* loop through the list of restaurants and for each element make a restaurant div
   //const [restaurantList, setRestaurants] = useState({}); => not being used
@@ -26,16 +22,15 @@ const RestaurantContainer = (props) => {
 
   //Declare a new state for our Add restaurant Modal
   const [showModal, setModal] = useState(false);
-<<<<<<< HEAD
 
-  const fetchCity = async () => {
-    const response = await fetch(`/api/resto/${city}`);
-=======
+  // const fetchCity = async () => {
+  //   const response = await fetch(`/api/resto/${city}`);
+
   const fetchCityCuisine = async () => {
-    const fetchDestination = `/api/resto/${city}/${cuisine}`
-    console.log({fetchDestination});
+
+    //  const fetchDestination = `/api/resto/${city}/${cuisine}`;
+    // console.log({fetchDestination});
     const response = await fetch(`/api/resto/${city}/${cuisine}`);
->>>>>>> dev
     const cityData = await response.json();
 
     // fetch to get vote status (1, 0, -1), 
