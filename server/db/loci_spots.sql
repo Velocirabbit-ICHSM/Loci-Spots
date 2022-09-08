@@ -68,9 +68,9 @@ ALTER TABLE  public.user_resto_votes ADD CONSTRAINT "votes_fk1" FOREIGN KEY ("re
  INSERT INTO public.resto VALUES (2, 'Hot Dougs', '21 Archer St', 'Toronto', 'Sandwich', 'www.google.com', 0, 1);
  
 
- INSERT INTO public.user_resto_votes VALUES (1, 1, 1, 1);
- INSERT INTO public.user_resto_votes VALUES (2, 1, 2, -1);
- INSERT INTO public.user_resto_votes VALUES (3, 2, 1, 1);
+ INSERT INTO public.user_resto_votes VALUES (1, 1, 1);
+ INSERT INTO public.user_resto_votes VALUES (1, 2, -1);
+ INSERT INTO public.user_resto_votes VALUES (2, 1, 1);
 
 select setval('user_resto_votes__id_seq', 4, false);
 

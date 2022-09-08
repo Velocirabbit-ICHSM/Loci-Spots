@@ -6,20 +6,33 @@ const RestaurantContainer = (props) => {
   const { city, cityList, setCity } = props;
   //* Bring in the list of restaurants and update restaurant container
   //* loop through the list of restaurants and for each element make a restaurant div
-  const [restaurantList, setRestaurants] = useState({});
+  //const [restaurantList, setRestaurants] = useState({}); => not being used
   const [restoArray, setRestoArray] = useState([]);
-  const [currentVote, setVote] = useState({ resto_id: 0, action: '' });
-  const [recentlyDeleted, setDeleted] = useState({resto_id: 0})
+  const [currentVote, setVote] = useState({resto_id: 0, action: '' });
+  //const [upOrDownVote, setUpOrDownVote] = useState({user_id: '', resto_id: 0, action: '' }); => may not need this...
+  const [recentlyDeleted, setDeleted] = useState({resto_id: 0});
+  // const [didVote, setDidVote] = useState(0); => not sure if i need this yet...
 
   //declare a reference to track whether a component has been mounted and initialize it to false
   const isMounted = useRef(false);
 
   //Declare a new state for our Add restaurant Modal
   const [showModal, setModal] = useState(false);
+
   const fetchCity = async () => {
     const response = await fetch(`/api/resto/${city}`);
     const cityData = await response.json();
-    // pulling from an api that returns an array filled with objects, returns dependant on city on line 20
+
+    // fetch to get vote status (1, 0, -1), 
+    /*
+    is this fetch request only pulling data from the currently logged in user?
+    if so, set didVote
+    */
+    const voteResponse = await fetch(`/api/user/`);
+    const voteTableData = await voteResponse.json();
+
+    // console.log(voteTableData);
+
     /* 
     at array element 0
 
@@ -29,12 +42,12 @@ const RestaurantContainer = (props) => {
     link: "google.com"
     resto_id: 73
     restoname: "Checking"
-    votes: 61
 
     cityData[city][0].foodtype => "chinese"
     */
     console.log(cityData[city], 'in fetchcity')
     const tmpArr = [];
+
     cityData[city].forEach((el, i) => {
       tmpArr.push(
         <Restaurant
@@ -43,6 +56,14 @@ const RestaurantContainer = (props) => {
           key={i}
           restoObj={el}
           setDeleted={setDeleted}
+          /*didVote={  
+            
+            if el.resto_id is in voteTableData.resto_id ?
+            set the vote to voteTableDate.vote where it matches the el.resto_id :
+            otherwise set to 0 (but how does this get updated to the voteTable?  update a piece of state?)
+          }
+          userId={voteTableData.user_id}
+          */
         />
       );
     });
@@ -64,9 +85,10 @@ const RestaurantContainer = (props) => {
           console.log(currentVote);
           // console.log('in update votes');
           const { resto_id, action } = currentVote;
-          const response = await fetch('/api/resto/', {
+          //for route to /api/user/, is data being managed in the backend to update vote data being store in the resto table?
+          const response = await fetch('/api/user/', {
             method: 'PATCH',
-            body: JSON.stringify({ resto_id, action }),
+            body: JSON.stringify({/* user_id */ resto_id, action }),
             headers: {
               'Content-Type': 'application/json',
             },

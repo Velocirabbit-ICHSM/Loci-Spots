@@ -1,22 +1,34 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import { myContext } from './Context';
 
 const Restaurant = (props) => {
-  const { restoObj, setVote, currentVote, setDeleted } = props;
+  const { restoObj, setVote, currentVote, setDeleted/*, didVote */} = props;
   const { resto_id, restoname, address, city, foodtype, link, votes } = restoObj;
 
-  // console.log("restobject: ",restoObj)
-  // console.log("setVote: ",setVote)
-  // console.log("currentVote: ",currentVote)
-  // console.log("setDeleted: ",setDeleted)
+
+  /* const user = useContext(myContext); */
+
+  /* 
+  const handleUnvote = async (e) => {
+
+    fetch patch to unvote
+    
+    body: ({user_id: user_id, resto_id: resto_id, action: 'unvote'})
+
+
+    setVote(resto_id: resto_id, action: 'dependant on previous action')
+
+  }
+  */
 
   const handleUpVote = (e) => {
-    // console.log('in handle up vote');
-    // console.log(resto_id, votes);
-    setVote({ resto_id: resto_id, action: 'upvote' });
-    // console.log(currentVote);
+    //is the upvote updating voteTable - currently pulling from voteTable to reflect didVote
+    setVote({/* user_id: user,*/ resto_id: resto_id, action: 'upvote' });
+
   };
   const handleDownVote = (e) => {
-    setVote({ resto_id, action: 'downvote' });
+    //is the downvote updating voteTable 
+    setVote({/* user_id: user,*/ resto_id, action: 'downvote' });
   };
   const handleDelete = (e) => {
     (async () => {
@@ -38,11 +50,11 @@ const Restaurant = (props) => {
   return (
     <div className='restaurant-container'>
       <div className='voteSection'>
-        <button className='upVote voteBtn' onClick={handleUpVote}>
+        <button className='upVote voteBtn' onClick={/*didVote === 1 ? handleUnvote : */handleUpVote}>
           &#8679;
         </button>
         <p className='voteCount'>{votes}</p>
-        <button className='downVote voteBtn' onClick={handleDownVote}>
+        <button className='downVote voteBtn' onClick={/*didVote === -1 ? handleUnvote : */handleDownVote}>
           &#8681;
         </button>
       </div>
