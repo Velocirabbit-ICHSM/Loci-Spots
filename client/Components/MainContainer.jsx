@@ -6,7 +6,7 @@ import Logo from '../src/media/LociSpotLogo.png';
 import DropDownList from './DropDownList';
 import DropDownCuisine from './DropDownCuisine';
 
-const MainContainer = () => {
+const MainContainer = (props) => {
   //main container will store the state of the drop down list and the state of the restaurant container which contains a list of the restaurants
   const [city, setCity] = useState('New York');
   const [cuisine, setCuisine] = useState('All');
@@ -34,7 +34,7 @@ const MainContainer = () => {
       </div>
 
       <div>
-        <RestaurantContainer city={city} cityList={cities} setCity={setCity} 
+        <RestaurantContainer city={city} cityList={cities} setCity={setCity} user={props.user} 
         setCuisine={setCuisine} cuisine={cuisine} cuisineList={cuisines}
         />
       </div>
