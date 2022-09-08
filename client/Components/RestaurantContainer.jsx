@@ -16,8 +16,8 @@ const RestaurantContainer = (props) => {
 
   //Declare a new state for our Add restaurant Modal
   const [showModal, setModal] = useState(false);
-  const fetchCity = async () => {
-    const response = await fetch(`/api/resto/${city}`);
+  const fetchCityCuisine = async () => {
+    const response = await fetch(`/api/resto/${city}/${cuisine}`);
     const cityData = await response.json();
     // pulling from an api that returns an array filled with objects, returns dependant on city on line 20
     /* 
@@ -33,32 +33,26 @@ const RestaurantContainer = (props) => {
 
     cityData[city][0].foodtype => "chinese"
     */
-    console.log(cityData[city], 'in fetchcity')
-    const tmpArr = [];
-    cityData[city].forEach((el, i) => {
-      tmpArr.push(
-        <Restaurant
-          setVote={setVote}
-          currentVote={currentVote}
-          key={i}
-          restoObj={el}
-          setDeleted={setDeleted}
-        />
-      );
-    });
-    setRestoArray(tmpArr);
+    console.log(cityData, 'in fetchcity');
+    // const tmpArr = [];
+    // cityData[city].forEach((el, i) => {
+    //   tmpArr.push(
+    //     <Restaurant
+    //       setVote={setVote}
+    //       currentVote={currentVote}
+    //       key={i}
+    //       restoObj={el}
+    //       setDeleted={setDeleted}
+    //     />
+    //   );
+    // });
+    // setRestoArray(tmpArr);
   };
-
-  const fetchCityCuisine = async () => {
-    const response = await fetch(`/api/resto/${city}/${cuisine}`);
-    const cityData = await response.json();
-
-  }
 
   useEffect(() => {
     // console.log(isMounted.current)
     try {
-      fetchCity();
+      fetchCityCuisine();
     } catch (error) {
       console.log('City not Found!', error);
     }
@@ -78,7 +72,7 @@ const RestaurantContainer = (props) => {
               'Content-Type': 'application/json',
             },
           });
-          fetchCity();
+          fetchCityCuisine();
           console.log(response);
         };
         updateVotes();
@@ -101,7 +95,7 @@ const RestaurantContainer = (props) => {
    */
   useEffect(() => {
     try {
-      fetchCity();
+      fetchCityCuisine();
     } catch (error) {
       console.log(`Error attempting to fetch city after delete, ${error}`)
     }
