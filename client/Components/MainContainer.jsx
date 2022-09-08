@@ -17,21 +17,10 @@ const MainContainer = () => {
   const [cuisines, setCuisines] = useState(['All', 'Chinese', 'Mexican', 'Italian', 'American', 'Korean', 'Portuguese', 'Greek', 'Japanese', 'African', 'Indian', 'Brazilian'])
   //each object will contain key value pair of the city and an array of restaurants
 
-  // useEffect(() => {
-  //   console.log('in use effect,', city)
-  //   try {
-  //       (fetchCity = async () => {
-  //         const response = await fetch(`/api/?city=${city}`)
-  //         const cityData = await response.json()
-  //         setRestaurants(cityData);
-  //       })();
-  //   } catch (error) {
-  //       console.log('City not Found!', error)
-  //   }
 
-  // }, [city])
   useEffect(() => {}, [city, cuisine]);
   // useEffect(() => {}, [cuisine]);
+
   return (
     <div>
       <div className='nav'>
