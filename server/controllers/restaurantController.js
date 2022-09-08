@@ -42,12 +42,10 @@ restaurantController.getRestaurants = async (req, res, next) => {
     ORDER BY votes`;
 
     const params = [city];
-
-    if (cuisine !== 'All') {
-      queryString2 += 'AND resto.foodtype = $2';
+    if(cuisine !== 'All'){
+      queryString2 += 'AND resto.foodtype = $2'
       params.push(cuisine);
     }
-    
     const queryString = queryString1 + queryString2 + queryString3;
     const result = await db.query(queryString, params);
     res.locals.restaurants = { [city]: result.rows };
@@ -66,12 +64,13 @@ restaurantController.addRestaurant = async (req, res, next) => {
   console.log(req.body);
   try {
     console.log('inside of addRestaurant');
-    const { name, address, city, foodType, link } = req.body;
+    const { name, address, city, foodType, link, user_id } = req.body;
 
     const queryString = `
     INSERT INTO resto (restoName, address, city, foodType, link, add_by_user)
     VALUES ( $1, $2, $3, $4, $5, $6);`;
     const params = [name, address, city, foodType, link, 1];
+
     const result = await db.query(queryString, params);
     // console.log(result);
     // res.locals.addedRestaurant = result;
