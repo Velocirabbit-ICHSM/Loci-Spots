@@ -30,7 +30,8 @@ const MainContainer = () => {
   //   }
 
   // }, [city])
-  useEffect(() => {}, [city] , [cuisine]);
+  useEffect(() => {}, [city, cuisine]);
+  // useEffect(() => {}, [cuisine]);
   return (
     <div>
       <div className='nav'>

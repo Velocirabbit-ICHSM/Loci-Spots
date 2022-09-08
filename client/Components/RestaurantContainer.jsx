@@ -17,6 +17,8 @@ const RestaurantContainer = (props) => {
   //Declare a new state for our Add restaurant Modal
   const [showModal, setModal] = useState(false);
   const fetchCityCuisine = async () => {
+    const fetchDestination = `/api/resto/${city}/${cuisine}`
+    console.log({fetchDestination});
     const response = await fetch(`/api/resto/${city}/${cuisine}`);
     const cityData = await response.json();
     // pulling from an api that returns an array filled with objects, returns dependant on city on line 20
@@ -33,20 +35,20 @@ const RestaurantContainer = (props) => {
 
     cityData[city][0].foodtype => "chinese"
     */
-    console.log(cityData, 'in fetchcity');
-    // const tmpArr = [];
-    // cityData[city].forEach((el, i) => {
-    //   tmpArr.push(
-    //     <Restaurant
-    //       setVote={setVote}
-    //       currentVote={currentVote}
-    //       key={i}
-    //       restoObj={el}
-    //       setDeleted={setDeleted}
-    //     />
-    //   );
-    // });
-    // setRestoArray(tmpArr);
+    console.log(cityData[city], 'in fetchcitycuisine');
+    const tmpArr = [];
+    cityData[city].forEach((el, i) => {
+      tmpArr.push(
+        <Restaurant
+          setVote={setVote}
+          currentVote={currentVote}
+          key={i}
+          restoObj={el}
+          setDeleted={setDeleted}
+        />
+      );
+    });
+    setRestoArray(tmpArr);
   };
 
   useEffect(() => {
@@ -56,7 +58,7 @@ const RestaurantContainer = (props) => {
     } catch (error) {
       console.log('City not Found!', error);
     }
-  }, [city]);
+  }, [city, cuisine]);
   
   useEffect(() => {
     if(isMounted.current) {
@@ -65,18 +67,18 @@ const RestaurantContainer = (props) => {
           console.log(currentVote);
           // console.log('in update votes');
           const { resto_id, action } = currentVote;
-          const response = await fetch('/api/resto/', {
+          const response = await fetch('/api/recto/', {
             method: 'PATCH',
             body: JSON.stringify({ resto_id, action }),
             headers: {
               'Content-Type': 'application/json',
             },
           });
-          fetchCityCuisine();
+           fetchCityCuisine();
           console.log(response);
         };
         updateVotes();
-  
+       
         //run fetch city to re render
       } catch (error) {
         console.log('Error in updateVotes,', error);
@@ -114,6 +116,7 @@ const RestaurantContainer = (props) => {
           cuisineList={cuisineList}
           showModal={showModal}
           setModal={setModal}
+          setCuisine={setCuisine}
           setCity={setCity}
         />
       )}

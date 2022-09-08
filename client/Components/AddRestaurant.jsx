@@ -14,6 +14,7 @@ const AddRestaurant = (props) => {
   const handleClose = (e) => {
     setModal(false);
     setCity(restaurantData.city);
+    setCuisine(restaurantData.foodtype);
   };
   const cityElements = [];
   cityList.forEach((city) => {
@@ -35,7 +36,7 @@ const AddRestaurant = (props) => {
       ...restaurantData,
       [name]: value,
     });
-    // console.log(restaurantData);
+    console.log("getting resto data: ", restaurantData);
   };
   const handleSubmit = async (e) => {
     // console.log(restaurantData);

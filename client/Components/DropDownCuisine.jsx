@@ -12,8 +12,9 @@ const DropDownCuisine = (props) => {
     });
 
     const handleChange = (event) => {
-        setCuisine(event.target.value);
-      };
+      console.log("event:", event);
+      setCuisine(event.target.value);
+    };
     
 
     return (
