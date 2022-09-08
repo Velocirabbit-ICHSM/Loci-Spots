@@ -30,6 +30,8 @@ const Restaurant = (props) => {
     //is the downvote updating voteTable 
     setVote({/* user_id: user,*/ resto_id, action: 'downvote' });
   };
+
+
   const handleDelete = (e) => {
     (async () => {
       try {
