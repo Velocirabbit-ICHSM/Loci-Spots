@@ -4,17 +4,23 @@ import Logo from '../src/media/LociSpotLogo.png';
 
 
 import DropDownList from './DropDownList';
+import DropDownCuisine from './DropDownCuisine';
 
 const MainContainer = () => {
   //main container will store the state of the drop down list and the state of the restaurant container which contains a list of the restaurants
   const [city, setCity] = useState('New York');
+  const [cuisine, setCuisine] = useState('All');
   /**
    * List of city hooks
    */
   const [cities, setCities] = useState(['New York', 'Toronto', 'Omaha']);
+  const [cuisines, setCuisines] = useState(['All', 'Chinese', 'Mexican', 'Italian', 'American', 'Korean', 'Portuguese', 'Greek', 'Japanese', 'African', 'Indian', 'Brazilian'])
   //each object will contain key value pair of the city and an array of restaurants
 
-  useEffect(() => {}, [city]);
+
+  useEffect(() => {}, [city, cuisine]);
+  // useEffect(() => {}, [cuisine]);
+
   return (
     <div>
       <div className='nav'>
@@ -22,12 +28,15 @@ const MainContainer = () => {
           <img className='logo' src={Logo} />
           <span className='citySearch'>
             <DropDownList setCity={setCity} city={city} cityList={cities} />
+            <DropDownCuisine setCuisine={setCuisine} cuisine={cuisine} cuisineList={cuisines} />
           </span>
         </div>
       </div>
 
       <div>
-        <RestaurantContainer city={city} cityList={cities} setCity={setCity} />
+        <RestaurantContainer city={city} cityList={cities} setCity={setCity} 
+        setCuisine={setCuisine} cuisine={cuisine} cuisineList={cuisines}
+        />
       </div>
     </div>
   );
