@@ -48,8 +48,11 @@ restaurantController.getRestaurants = async (req, res, next) => {
     }
     const queryString = queryString1 + queryString2 + queryString3;
     const result = await db.query(queryString, params);
+    result.rows.forEach(row => {
+      if(row.votes === null) row.votes = 0
+    });
     res.locals.restaurants = { [city]: result.rows };
-
+    
     return next();
   } catch (err) {
     return next({
