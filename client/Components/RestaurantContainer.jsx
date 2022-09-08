@@ -7,7 +7,7 @@ const RestaurantContainer = (props) => {
 
   // const user = useContext(myContext);
 
-  const { city, cityList, setCity, cuisine } = props;
+  const { city, cityList, setCity, cuisine, cuisineList, setCuisine } = props;
   //* Bring in the list of restaurants and update restaurant container
   //* loop through the list of restaurants and for each element make a restaurant div
   //const [restaurantList, setRestaurants] = useState({}); => not being used
@@ -36,7 +36,7 @@ const RestaurantContainer = (props) => {
     const voteResponse = await fetch(`/api/user/${props.user}`);
     const voteTableData = await voteResponse.json();
 
-    console.log('Vote table', voteTableData);
+    console.log('Vote table', props.user, voteTableData);
 
     /* 
     at array element 0
@@ -53,22 +53,20 @@ const RestaurantContainer = (props) => {
     console.log(cityData[city], 'in fetchcitycuisine');
     const tmpArr = [];
 
+
     cityData[city].forEach((el, i) => {
+
+      const userVoteForResto = voteTableData.filter(obj => obj.resto_id === el.resto_id)
+      const userVote = (!userVoteForResto.length) ? 0 : userVoteForResto[0].vote
+
       tmpArr.push(
         <Restaurant
           setVote={setVote}
           currentVote={currentVote}
+          userVote={userVote}
           key={i}
           restoObj={el}
           setDeleted={setDeleted}
-          // didVote={  
-          //   //voteTableData.user_id
-          //   el.resto_id in voteTableData ?
-          //   // set the vote to voteTableDate.vote where it matches the el.resto_id :
-          //   // otherwise set to 0 (but how does this get updated to the voteTable?  update a piece of state?)
-          // }
-          // userId={voteTableData.user_id}
-   
         />
       );
     });
@@ -92,9 +90,10 @@ const RestaurantContainer = (props) => {
           // console.log('in update votes');
           const { resto_id, action } = currentVote;
           //for route to /api/user/, is data being managed in the backend to update vote data being store in the resto table?
+          console.log(JSON.stringify({user_id: props.user, resto_id, action }));
           const response = await fetch('/api/user/', {
             method: 'PATCH',
-            body: JSON.stringify({user, resto_id, action }),
+            body: JSON.stringify({user_id: props.user, resto_id, action }),
             headers: {
               'Content-Type': 'application/json',
             },

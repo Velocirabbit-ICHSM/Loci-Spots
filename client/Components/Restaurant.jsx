@@ -2,33 +2,28 @@ import React, { useContext } from 'react';
 // import { myContext } from './Context';
 
 const Restaurant = (props) => {
-  const { restoObj, setVote, currentVote, setDeleted/*, didVote */} = props;
+  const { restoObj, setVote, currentVote, setDeleted, userVote} = props;
   const { resto_id, restoname, address, city, foodtype, link, votes } = restoObj;
-
-
-  /* const user = useContext(myContext); */
-
-  /* 
-  const handleUnvote = async (e) => {
-
-    fetch patch to unvote
-    
-    body: ({user_id: user_id, resto_id: resto_id, action: 'unvote'})
-
-
-    setVote(resto_id: resto_id, action: 'dependant on previous action')
-
-  }
-  */
 
   const handleUpVote = (e) => {
     //is the upvote updating voteTable - currently pulling from voteTable to reflect didVote
-    setVote({/* user_id: user,*/ resto_id: resto_id, action: 'upvote' });
+    console.log('Handling upvote')
+    //if user vote is up undo vote
+    if (userVote === 1){
+      return setVote({ resto_id: resto_id, action: 'unvote' });
+    }
+    
+    return setVote({ resto_id: resto_id, action: 'upvote' });
+    
 
   };
   const handleDownVote = (e) => {
     //is the downvote updating voteTable 
-    setVote({/* user_id: user,*/ resto_id, action: 'downvote' });
+    console.log('Handling downvote')
+    if (userVote === -1){
+      return setVote({ resto_id: resto_id, action: 'unvote' });
+    }
+    return setVote({ resto_id, action: 'downvote' });
   };
 
 
@@ -52,11 +47,11 @@ const Restaurant = (props) => {
   return (
     <div className='restaurant-container'>
       <div className='voteSection'>
-        <button className='upVote voteBtn' onClick={/*didVote === 1 ? handleUnvote : */handleUpVote}>
+        <button className='upVote voteBtn' onClick={handleUpVote}>
           &#8679;
         </button>
         <p className='voteCount'>{votes}</p>
-        <button className='downVote voteBtn' onClick={/*didVote === -1 ? handleUnvote : */handleDownVote}>
+        <button className='downVote voteBtn' onClick={handleDownVote}>
           &#8681;
         </button>
       </div>
