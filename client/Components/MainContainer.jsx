@@ -1,5 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import RestaurantContainer from './RestaurantContainer';
+import Logo from '../src/media/LociSpotLogo.png';
+
+
+import DropDownList from './DropDownList';
 
 const MainContainer = () => {
   //main container will store the state of the drop down list and the state of the restaurant container which contains a list of the restaurants
@@ -12,9 +16,20 @@ const MainContainer = () => {
 
   useEffect(() => {}, [city]);
   return (
+    <div>
+      <div className='nav'>
+        <div className='nav-container'>
+          <img className='logo' src={Logo} />
+          <span className='citySearch'>
+            <DropDownList setCity={setCity} city={city} cityList={cities} />
+          </span>
+        </div>
+      </div>
+
       <div>
         <RestaurantContainer city={city} cityList={cities} setCity={setCity} />
       </div>
+    </div>
   );
 };
 
