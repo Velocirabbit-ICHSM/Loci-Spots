@@ -7,7 +7,7 @@ const AddRestaurant = (props) => {
     name: '',
     address: '',
     city: 'New York',
-    cuisine: '',
+    foodType: '',
     link: '',
   });
 
@@ -98,9 +98,9 @@ const AddRestaurant = (props) => {
             />
           </p>
           <p>
-            <label htmlFor='restaurant-cuisine'>
+            <label htmlFor='restaurant-foodtype'>
               Cuisine: 
-              <select name='cuisine' onChange={handleInputChange}>
+              <select name='foodType' onChange={handleInputChange}>
               {cuisineElements}
             </select>
             </label>
