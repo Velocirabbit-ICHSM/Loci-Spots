@@ -3,7 +3,7 @@ import AddRestaurant from './AddRestaurant';
 import Restaurant from './Restaurant';
 
 const RestaurantContainer = (props) => {
-  const { city, cityList, setCity } = props;
+  const { city, cityList, setCity, cuisine, cuisineList, setCuisine} = props;
   //* Bring in the list of restaurants and update restaurant container
   //* loop through the list of restaurants and for each element make a restaurant div
   //const [restaurantList, setRestaurants] = useState({}); => not being used
@@ -18,9 +18,10 @@ const RestaurantContainer = (props) => {
 
   //Declare a new state for our Add restaurant Modal
   const [showModal, setModal] = useState(false);
-
-  const fetchCity = async () => {
-    const response = await fetch(`/api/resto/${city}`);
+  const fetchCityCuisine = async () => {
+    const fetchDestination = `/api/resto/${city}/${cuisine}`
+    console.log({fetchDestination});
+    const response = await fetch(`/api/resto/${city}/${cuisine}`);
     const cityData = await response.json();
 
     // fetch to get vote status (1, 0, -1), 
@@ -45,7 +46,7 @@ const RestaurantContainer = (props) => {
 
     cityData[city][0].foodtype => "chinese"
     */
-    console.log(cityData[city], 'in fetchcity')
+    console.log(cityData[city], 'in fetchcitycuisine');
     const tmpArr = [];
 
     cityData[city].forEach((el, i) => {
@@ -69,14 +70,15 @@ const RestaurantContainer = (props) => {
     });
     setRestoArray(tmpArr);
   };
+
   useEffect(() => {
     // console.log(isMounted.current)
     try {
-      fetchCity();
+      fetchCityCuisine();
     } catch (error) {
       console.log('City not Found!', error);
     }
-  }, [city]);
+  }, [city, cuisine]);
   
   useEffect(() => {
     if(isMounted.current) {
@@ -85,19 +87,18 @@ const RestaurantContainer = (props) => {
           console.log(currentVote);
           // console.log('in update votes');
           const { resto_id, action } = currentVote;
-          //for route to /api/user/, is data being managed in the backend to update vote data being store in the resto table?
-          const response = await fetch('/api/user/', {
+          const response = await fetch('/api/resto/', {
             method: 'PATCH',
             body: JSON.stringify({/* user_id */ resto_id, action }),
             headers: {
               'Content-Type': 'application/json',
             },
           });
-          fetchCity();
+           fetchCityCuisine();
           console.log(response);
         };
         updateVotes();
-  
+       
         //run fetch city to re render
       } catch (error) {
         console.log('Error in updateVotes,', error);
@@ -116,7 +117,7 @@ const RestaurantContainer = (props) => {
    */
   useEffect(() => {
     try {
-      fetchCity();
+      fetchCityCuisine();
     } catch (error) {
       console.log(`Error attempting to fetch city after delete, ${error}`)
     }
@@ -132,8 +133,10 @@ const RestaurantContainer = (props) => {
       {showModal && (
         <AddRestaurant
           cityList={cityList}
+          cuisineList={cuisineList}
           showModal={showModal}
           setModal={setModal}
+          setCuisine={setCuisine}
           setCity={setCity}
         />
       )}
