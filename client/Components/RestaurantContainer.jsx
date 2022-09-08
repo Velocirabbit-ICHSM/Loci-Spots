@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import AddRestaurant from './AddRestaurant';
 import Restaurant from './Restaurant';
 // import { myContext } from '../src/Context';
@@ -22,14 +22,9 @@ const RestaurantContainer = (props) => {
 
   //Declare a new state for our Add restaurant Modal
   const [showModal, setModal] = useState(false);
-
-  // const fetchCity = async () => {
-  //   const response = await fetch(`/api/resto/${city}`);
-
   const fetchCityCuisine = async () => {
-
-    //  const fetchDestination = `/api/resto/${city}/${cuisine}`;
-    // console.log({fetchDestination});
+    const fetchDestination = `/api/resto/${city}/${cuisine}`
+    console.log('Inside fetch city cuisine', {fetchDestination});
     const response = await fetch(`/api/resto/${city}/${cuisine}`);
     const cityData = await response.json();
 
@@ -38,10 +33,10 @@ const RestaurantContainer = (props) => {
     is this fetch request only pulling data from the currently logged in user?
     if so, set didVote
     */
-    // const voteResponse = await fetch(`/api/user/`);
-    // const voteTableData = await voteResponse.json();
+    const voteResponse = await fetch(`/api/user/${props.user}`);
+    const voteTableData = await voteResponse.json();
 
-    // console.log(voteTableData);
+    console.log('Vote table', voteTableData);
 
     /* 
     at array element 0

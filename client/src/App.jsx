@@ -11,6 +11,7 @@ import { myContext } from './Context';
 const App = (props) => {
 
   const user = useContext(myContext);
+  // const [user, setUser] = useState(useContext(myContext));
 
   console.log('this is: ', user);
 
@@ -18,7 +19,7 @@ const App = (props) => {
     <BrowserRouter>
       <Routes>
         <Route path='/' 
-        element={user ? <MainContainer/> : <LoginPage />} />
+        element={user ? <MainContainer user={user}/> : <LoginPage />} />
       </Routes>
     </BrowserRouter>
   );
