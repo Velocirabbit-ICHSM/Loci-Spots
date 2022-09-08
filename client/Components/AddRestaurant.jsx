@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
 const AddRestaurant = (props) => {
-  const { setModal, showModal, cityList, setCity } = props;
+  const { setModal, showModal, cityList, setCity, cuisineList, setCuisine } = props;
 
   const [restaurantData, setNewRestaurant] = useState({
     name: '',
     address: '',
     city: 'New York',
-    foodtype: '',
+    cuisine: '',
     link: '',
   });
 
@@ -22,6 +22,12 @@ const AddRestaurant = (props) => {
     );
   });
 
+  const cuisineElements = [];
+  cuisineList.forEach((cuisine) => {
+    cuisineElements.push(
+      <option key={`${cuisine}`} value={`${cuisine}`}>{`${cuisine}`}</option>
+    );
+  });
   const handleInputChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
@@ -91,13 +97,12 @@ const AddRestaurant = (props) => {
             />
           </p>
           <p>
-            <label htmlFor='restaurant-foodtype'>Cuisine: </label>
-            <input
-              name='foodType'
-              type='text'
-              placeholder='Cuisine'
-              onChange={handleInputChange}
-            />
+            <label htmlFor='restaurant-cuisine'>
+              Cuisine: 
+              <select name='cuisine' onChange={handleInputChange}>
+              {cuisineElements}
+            </select>
+            </label>
           </p>
           <label htmlFor='restaurant-city'>
             Add to City:

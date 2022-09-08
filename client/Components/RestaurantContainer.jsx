@@ -3,7 +3,7 @@ import AddRestaurant from './AddRestaurant';
 import Restaurant from './Restaurant';
 
 const RestaurantContainer = (props) => {
-  const { city, cityList, setCity } = props;
+  const { city, cityList, setCity, cuisine, cuisineList, setCuisine} = props;
   //* Bring in the list of restaurants and update restaurant container
   //* loop through the list of restaurants and for each element make a restaurant div
   const [restaurantList, setRestaurants] = useState({});
@@ -48,6 +48,13 @@ const RestaurantContainer = (props) => {
     });
     setRestoArray(tmpArr);
   };
+
+  const fetchCityCuisine = async () => {
+    const response = await fetch(`/api/resto/${city}/${cuisine}`);
+    const cityData = await response.json();
+
+  }
+
   useEffect(() => {
     // console.log(isMounted.current)
     try {
@@ -110,6 +117,7 @@ const RestaurantContainer = (props) => {
       {showModal && (
         <AddRestaurant
           cityList={cityList}
+          cuisineList={cuisineList}
           showModal={showModal}
           setModal={setModal}
           setCity={setCity}
