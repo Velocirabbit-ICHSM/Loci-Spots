@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import './styles.css';
 
 import MainContainer from '../Components/MainContainer'
+import NavBar from '../Components/NavBar'
 import LoginPage from '../Pages/LoginPage';
 import { myContext } from './Context';
 
@@ -15,6 +16,7 @@ const App = (props) => {
 
   return (
     <BrowserRouter>
+      <NavBar/>
       <Routes>
         <Route path='/' 
         element={user ? <MainContainer/> : <LoginPage />} />
