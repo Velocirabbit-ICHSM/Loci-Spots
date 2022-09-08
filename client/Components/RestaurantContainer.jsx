@@ -1,8 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import AddRestaurant from './AddRestaurant';
 import Restaurant from './Restaurant';
+import { myContext } from '../src/Context';
 
 const RestaurantContainer = (props) => {
+
+  const user = useContext(myContext);
+
   const { city, cityList, setCity } = props;
   //* Bring in the list of restaurants and update restaurant container
   //* loop through the list of restaurants and for each element make a restaurant div
@@ -28,8 +32,8 @@ const RestaurantContainer = (props) => {
     is this fetch request only pulling data from the currently logged in user?
     if so, set didVote
     */
-    const voteResponse = await fetch(`/api/user/`);
-    const voteTableData = await voteResponse.json();
+    // const voteResponse = await fetch(`/api/user/`);
+    // const voteTableData = await voteResponse.json();
 
     // console.log(voteTableData);
 
@@ -56,14 +60,14 @@ const RestaurantContainer = (props) => {
           key={i}
           restoObj={el}
           setDeleted={setDeleted}
-          /*didVote={  
-            
-            if el.resto_id is in voteTableData.resto_id ?
-            set the vote to voteTableDate.vote where it matches the el.resto_id :
-            otherwise set to 0 (but how does this get updated to the voteTable?  update a piece of state?)
-          }
-          userId={voteTableData.user_id}
-          */
+          // didVote={  
+          //   //voteTableData.user_id
+          //   el.resto_id in voteTableData ?
+          //   // set the vote to voteTableDate.vote where it matches the el.resto_id :
+          //   // otherwise set to 0 (but how does this get updated to the voteTable?  update a piece of state?)
+          // }
+          // userId={voteTableData.user_id}
+   
         />
       );
     });
@@ -88,7 +92,7 @@ const RestaurantContainer = (props) => {
           //for route to /api/user/, is data being managed in the backend to update vote data being store in the resto table?
           const response = await fetch('/api/user/', {
             method: 'PATCH',
-            body: JSON.stringify({/* user_id */ resto_id, action }),
+            body: JSON.stringify({user, resto_id, action }),
             headers: {
               'Content-Type': 'application/json',
             },
@@ -122,6 +126,9 @@ const RestaurantContainer = (props) => {
     }
     
   }, [recentlyDeleted])
+
+  // console.log('user: ', user); im getting a user
+
   return (
     <div className='restaurantContainer'>
       <div className='cityName'>{`${city}`}</div>

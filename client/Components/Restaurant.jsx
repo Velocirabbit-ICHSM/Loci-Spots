@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { myContext } from './Context';
+import React from 'react';
+// import { myContext } from './Context';
 
 const Restaurant = (props) => {
   const { restoObj, setVote, currentVote, setDeleted/*, didVote */} = props;
