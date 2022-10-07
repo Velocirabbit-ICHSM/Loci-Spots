@@ -3,11 +3,11 @@
 const { Client } = require('pg');
 
 const client = new Client({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'locidb',
-    password: null,
-    port: 3000,
+  user: 'postgres',
+  host: 'localhost',
+  database: 'locidb',
+  password: null,
+  port: 3000,
 });
 
 client.connect();
@@ -38,10 +38,9 @@ CREATE TABLE restos (
 // });
 
 try {
-    const res = await client.query(query);
-    console.log('restaurant table successfully created inside locidb');
+  const res = await client.query(query);
 } catch (err) {
-    console.log(err.stack);
+  console.log(err.stack);
 } finally {
-    client.close();
-};
+  client.close();
+}

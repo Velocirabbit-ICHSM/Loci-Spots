@@ -14,7 +14,6 @@ const pool = new Pool({
 
 module.exports = {
   query: (text, params, callback) => {
-    // console.log('server/models/resomodels - executed query:', text);
     return pool.query(text, params, callback);
   },
 };

@@ -18,16 +18,12 @@ const AddRestaurant = (props) => {
   };
   const cityElements = [];
   cityList.forEach((city) => {
-    cityElements.push(
-      <option key={`${city}`} value={`${city}`}>{`${city}`}</option>
-    );
+    cityElements.push(<option key={`${city}`} value={`${city}`}>{`${city}`}</option>);
   });
 
   const cuisineElements = [];
   cuisineList.forEach((cuisine) => {
-    cuisineElements.push(
-      <option key={`${cuisine}`} value={`${cuisine}`}>{`${cuisine}`}</option>
-    );
+    cuisineElements.push(<option key={`${cuisine}`} value={`${cuisine}`}>{`${cuisine}`}</option>);
   });
   const handleInputChange = (e) => {
     const name = e.target.name;
@@ -36,7 +32,7 @@ const AddRestaurant = (props) => {
       ...restaurantData,
       [name]: value,
     });
-    console.log("getting resto data: ", restaurantData);
+    console.log('getting resto data: ', restaurantData);
   };
   const handleSubmit = async (e) => {
     // console.log(restaurantData);
@@ -47,73 +43,57 @@ const AddRestaurant = (props) => {
     };
     fetch('/api/resto', restaurantObj)
       .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((err) =>
-        console.log('Error in submitting a new restaurant,', err)
-      );
-    // try {
-    //   const restaurantObj = {
-    //     method: "POST",
-    //     headers: { "Content-Type": "application/json"},
-    //     body: JSON.stringify(restaurantData),
-    //   }
-    //   const response =  fetch("/api", restaurantObj)
-    //   const data = await response.json()
-    //   console.log(data)
-    // } catch (error) {
-    //   console.log('Error in Submitting a new restaurant,', error)
-    // }
-    // setModal(false);
+      .catch((err) => console.log('Error in submitting a new restaurant,', err));
   };
   return (
-    <div className='modal'>
+    <div className="modal">
       <section>
-        <p className='resto-name'>Add a Restaurant</p>
+        <p className="resto-name">Add a Restaurant</p>
         <form>
           <p>
-            <label htmlFor='restaurant-name'>Restaurant Name: </label>
+            <label htmlFor="restaurant-name">Restaurant Name: </label>
             <input
-              type='text'
-              name='name'
-              placeholder='Restaurant Name'
+              type="text"
+              name="name"
+              placeholder="Restaurant Name"
               onChange={handleInputChange}
             />
           </p>
           <p>
-            <label htmlFor='restaurant-address'>Restaurant Address: </label>
+            <label htmlFor="restaurant-address">Restaurant Address: </label>
             <input
-              name='address'
-              type='text'
-              placeholder='Restaurant Address'
+              name="address"
+              type="text"
+              placeholder="Restaurant Address"
               onChange={handleInputChange}
             />
           </p>
           <p>
-            <label htmlFor='restaurant-link'>Restaurant Link: </label>
+            <label htmlFor="restaurant-link">Restaurant Link: </label>
             <input
-              name='link'
-              type='text'
-              placeholder='Restaurant Link'
+              name="link"
+              type="text"
+              placeholder="Restaurant Link"
               onChange={handleInputChange}
             />
           </p>
           <p>
-            <label htmlFor='restaurant-foodtype'>
-              Cuisine: 
-              <select name='foodType' onChange={handleInputChange}>
-              {cuisineElements}
-            </select>
+            <label htmlFor="restaurant-foodtype">
+              Cuisine:
+              <select name="foodType" onChange={handleInputChange}>
+                {cuisineElements}
+              </select>
             </label>
           </p>
-          <label htmlFor='restaurant-city'>
+          <label htmlFor="restaurant-city">
             Add to City:
-            <select name='city' onChange={handleInputChange}>
+            <select name="city" onChange={handleInputChange}>
               {cityElements}
             </select>
           </label>
           <br></br>
           <br></br>
-          <button type='submit' onClick={handleSubmit}>
+          <button type="submit" onClick={handleSubmit}>
             Submit
           </button>
           <button onClick={handleClose}>Close</button>

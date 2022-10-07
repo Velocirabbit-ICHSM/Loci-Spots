@@ -7,12 +7,11 @@ const NavBar = () => {
   // each object will contain key value pair of the city and an array of restaurants
 
   return (
-
-      <div className='nav'>
-        <div className='nav-container'>
-          <img className='logo' src={Logo} />
-        </div>
+    <div className="nav">
+      <div className="nav-container">
+        <img className="logo" src={Logo} />
       </div>
+    </div>
   );
 };
 

@@ -17,7 +17,6 @@ const restaurantController = {};
 
 // get all restaurants
 restaurantController.getRestaurants = async (req, res, next) => {
-  // console.log('in get restaurants');
   try {
     const { city, cuisine } = req.params;
     let queryString1 = `
@@ -31,7 +30,7 @@ restaurantController.getRestaurants = async (req, res, next) => {
     FROM resto
     LEFT OUTER JOIN user_resto_votes ON resto.resto_id = user_resto_votes.resto_id`;
     let queryString2 = `
-    WHERE resto.city = $1`
+    WHERE resto.city = $1`;
     let queryString3 = `
     GROUP BY resto.resto_id, 
               resto.restoname, 
@@ -42,17 +41,17 @@ restaurantController.getRestaurants = async (req, res, next) => {
     ORDER BY votes`;
 
     const params = [city];
-    if(cuisine !== 'All'){
-      queryString2 += 'AND resto.foodtype = $2'
+    if (cuisine !== 'All') {
+      queryString2 += 'AND resto.foodtype = $2';
       params.push(cuisine);
     }
     const queryString = queryString1 + queryString2 + queryString3;
     const result = await db.query(queryString, params);
-    result.rows.forEach(row => {
-      if(row.votes === null) row.votes = 0
+    result.rows.forEach((row) => {
+      if (row.votes === null) row.votes = 0;
     });
     res.locals.restaurants = { [city]: result.rows };
-    
+
     return next();
   } catch (err) {
     return next({
@@ -64,9 +63,7 @@ restaurantController.getRestaurants = async (req, res, next) => {
 
 // add a restaurant
 restaurantController.addRestaurant = async (req, res, next) => {
-  console.log(req.body);
   try {
-    console.log('inside of addRestaurant');
     const { name, address, city, foodType, link, user_id } = req.body;
 
     const queryString = `
@@ -86,66 +83,10 @@ restaurantController.addRestaurant = async (req, res, next) => {
   }
 };
 
-
-
-// update (votes) for a restaurant
-// restaurantController.updateRestaurant = async (req, res, next) => {
-//   try {
-//     const { resto_id, action } = req.body;
-//     if (action === 'upvote') operation = '+';
-//     if (action === 'downvote') operation = '-';
-//     const queryString = `
-//     UPDATE resto
-//     SET votes=votes${operation}1
-//     WHERE resto_id=$1`;
-//     const params = [resto_id];
-//     // resto table holds all information on votes 
-//     // what is the single source of truth? The new table we are creating vs the original?
-//     // all the votes will now be tallied in the new table
-
-//     const result = await db.query(queryString, params);
-//     // res.locals.updatedRestaurant = result.rows;
-//     return next();
-//   } catch (err) {
-//     return next({
-//       log: 'Error in restaurantController.updateRestaurant: ' + err,
-//       message: { err: err },
-//     });
-//   }
-// };
-
-
-// update (votes) for a restaurant
-// Hina Update
-// restaurantController.updateRestaurant = async (req, res, next) => {
-//   try {
-//     const { resto_id, action } = req.body;
-//     if (action === 'upvote') votes = 1;
-//     if (action === 'downvote') votes = -1;
-//     const params = [resto_id, 'testing', votes]
-//     const queryString = `
-//     INSERT INTO uservotes(resto_id, user_id, votes)
-//     VALUES($1, $2, $3)
-//     ON CONFLICT (resto_id, user_id) 
-//     DO UPDATE SET votes = $3
-//     WHERE uservotes.resto_id=$1 AND uservotes.user_id=$2
-//     `
-//     await db.query(queryString, params);
-//     return next();
-//   } catch (err) {
-//     return next({
-//       log: 'Error in restaurantController.updateRestaurant: ' + err,
-//       message: { err: err },
-//     });
-//   }
-// };
-
-
 // delete a restaurant
 restaurantController.deleteRestaurant = async (req, res, next) => {
   try {
     const { resto_id } = req.body;
-    console.log(req.body);
     const queryString = `
     DELETE FROM resto 
     WHERE resto_id=$1`;

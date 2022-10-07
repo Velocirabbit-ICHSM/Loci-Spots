@@ -14,7 +14,6 @@ router.get('/:city/:cuisine', restaurantController.getRestaurants, (req, res) =>
   res.status(200).json(res.locals.restaurants);
 });
 
-
 /**
  * POST REQUESTS, create a new restaruant to LociDB
  */
@@ -23,8 +22,6 @@ router.post('/', restaurantController.addRestaurant, (req, res) => {
   res.status(200).send('Restaurant successfully added!');
 });
 
-
-
 /**
  * DELETE REQUESTS, delete a restaurant for a given resto_id
  */
@@ -32,8 +29,5 @@ router.delete('/', restaurantController.deleteRestaurant, (req, res) => {
   // console.log('deleteResto: Success!!!');
   res.status(200).send('Restaurant successfully deleted!');
 });
-
-
-
 
 module.exports = router;
