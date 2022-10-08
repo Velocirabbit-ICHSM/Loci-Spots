@@ -8,16 +8,14 @@ const DropDownList = (props) => {
   /**
    * Pull in props from Main Container
    */
-  const { city, setCity, cityList } = props;
+  const { setCity, cityList } = props;
 
   /**
    * Populate city elements array full of city option nodes
    */
   const cityElements = [];
   cityList.forEach((city) => {
-    cityElements.push(
-      <option key={`${city}`} value={`${city}`}>{`${city}`}</option>
-    );
+    cityElements.push(<option key={`${city}`} value={`${city}`}>{`${city}`}</option>);
   });
   /**
    * Handle change function that sets the city state to selected
@@ -31,7 +29,7 @@ const DropDownList = (props) => {
     <>
       <label>
         Select a City: <br></br>
-        <select className='dropdown' onChange={handleChange}>
+        <select className="dropdown" onChange={handleChange}>
           {cityElements}
         </select>
       </label>
