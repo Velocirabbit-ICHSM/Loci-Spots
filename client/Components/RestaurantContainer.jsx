@@ -3,24 +3,37 @@ import AddRestaurant from './AddRestaurant';
 import Restaurant from './Restaurant';
 
 const RestaurantContainer = (props) => {
-  const { city, cityList, setCity } = props;
+  const { city, cityList, setCity, cuisine, cuisineList, setCuisine } = props;
   //* Bring in the list of restaurants and update restaurant container
   //* loop through the list of restaurants and for each element make a restaurant div
   const [restaurantList, setRestaurants] = useState({});
   const [restoArray, setRestoArray] = useState([]);
   const [currentVote, setVote] = useState({ resto_id: 0, action: '' });
-  const [recentlyDeleted, setDeleted] = useState({resto_id: 0})
-  //declare a reference to track whether a component has been mounted and initialize it to false
+  const [recentlyDeleted, setDeleted] = useState({ resto_id: 0 });
 
+  //declare a reference to track whether a component has been mounted and initialize it to false
   const isMounted = useRef(false);
 
   //Declare a new state for our Add restaurant Modal
   const [showModal, setModal] = useState(false);
-  const fetchCity = async () => {
-    const response = await fetch(`/api/${city}`);
+  const fetchCityCuisine = async () => {
+    const fetchDestination = `/api/resto/${city}/${cuisine}`;
+    const response = await fetch(`/api/resto/${city}/${cuisine}`);
     const cityData = await response.json();
-    // setRestaurants(cityData);
-    console.log(cityData[city], 'in fetchcity')
+    // pulling from an api that returns an array filled with objects, returns dependant on city on line 20
+    /* 
+    at array element 0
+
+    address: "123 main"
+    city: "New York"
+    foodtype: "chinese"
+    link: "google.com"
+    resto_id: 73
+    restoname: "Checking"
+    votes: 61
+
+    cityData[city][0].foodtype => "chinese"
+    */
     const tmpArr = [];
     cityData[city].forEach((el, i) => {
       tmpArr.push(
@@ -30,46 +43,43 @@ const RestaurantContainer = (props) => {
           key={i}
           restoObj={el}
           setDeleted={setDeleted}
-        />
+        />,
       );
     });
     setRestoArray(tmpArr);
   };
+
   useEffect(() => {
-    // console.log(isMounted.current)
     try {
-      fetchCity();
+      fetchCityCuisine();
     } catch (error) {
       console.log('City not Found!', error);
     }
-  }, [city]);
+  }, [city, cuisine]);
+
   useEffect(() => {
-    if(isMounted.current) {
+    if (isMounted.current) {
       try {
         const updateVotes = async () => {
-          console.log(currentVote);
-          // console.log('in update votes');
           const { resto_id, action } = currentVote;
-          const response = await fetch('/api/', {
+          const response = await fetch('/api/recto/', {
             method: 'PATCH',
             body: JSON.stringify({ resto_id, action }),
             headers: {
               'Content-Type': 'application/json',
             },
           });
-          fetchCity();
-          console.log(response);
+          fetchCityCuisine();
         };
         updateVotes();
-  
+
         //run fetch city to re render
       } catch (error) {
         console.log('Error in updateVotes,', error);
       }
     } else {
-      isMounted.current = true
+      isMounted.current = true;
     }
-
   }, [currentVote]);
 
   const handleRestaurantAdd = (e) => {
@@ -80,24 +90,25 @@ const RestaurantContainer = (props) => {
    */
   useEffect(() => {
     try {
-      fetchCity();
+      fetchCityCuisine();
     } catch (error) {
-      console.log(`Error attempting to fetch city after delete, ${error}`)
+      console.log(`Error attempting to fetch city after delete, ${error}`);
     }
-    
-  }, [recentlyDeleted])
+  }, [recentlyDeleted]);
   return (
-    <div className='restaurantContainer'>
-      <div className='cityName'>{`${city}`}</div>
-      <button type='button' onClick={handleRestaurantAdd}>
+    <div className="restaurantContainer">
+      <div className="cityName">{`${city}`}</div>
+      <button type="button" onClick={handleRestaurantAdd}>
         Add a New Restaurant
       </button>
-      <div className='restaurantsList'>{restoArray}</div>
+      <div className="restaurantsList">{restoArray}</div>
       {showModal && (
         <AddRestaurant
           cityList={cityList}
+          cuisineList={cuisineList}
           showModal={showModal}
           setModal={setModal}
+          setCuisine={setCuisine}
           setCity={setCity}
         />
       )}

@@ -1,21 +1,20 @@
-import React from "react";
-import "./styles.css";
-import MainContainer from '../Components/MainContainer'
+import React, { useContext } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import './styles.css';
 
+import MainContainer from '../Components/MainContainer';
+
+import LoginPage from '../Pages/LoginPage';
+import { myContext } from './Context';
 
 const App = (props) => {
-  // const fetchAccounts = () => {
-  //   fetch('/api')
-  //   // .then((res) => res.json())
-  //   .then((data) => {
-  //     console.log(data);
-  //   })
-  // }
-  // fetchAccounts()
+  const user = useContext(myContext);
   return (
-    <>
-      <MainContainer />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={user ? <MainContainer /> : <LoginPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 };
 

@@ -17,16 +17,39 @@ const restaurantController = {};
 
 // get all restaurants
 restaurantController.getRestaurants = async (req, res, next) => {
-  console.log('in get restaurants');
   try {
-    const { city } = req.params;
-    const queryString = `
-    SELECT * FROM resto 
-    WHERE city=$1
-    ORDER BY votes DESC`;
-    const params = [city];
+    const { city, cuisine } = req.params;
+    let queryString1 = `
+    SELECT resto.resto_id, 
+          resto.restoname, 
+          resto.address, 
+          resto.city, 
+          resto.foodtype, 
+          resto.link, 
+          SUM(user_resto_votes.vote) AS votes
+    FROM resto
+    LEFT OUTER JOIN user_resto_votes ON resto.resto_id = user_resto_votes.resto_id`;
+    let queryString2 = `
+    WHERE resto.city = $1`;
+    let queryString3 = `
+    GROUP BY resto.resto_id, 
+              resto.restoname, 
+              resto.address, 
+              resto.city, 
+              resto.foodtype, 
+              resto.link
+    ORDER BY votes`;
 
+    const params = [city];
+    if (cuisine !== 'All') {
+      queryString2 += 'AND resto.foodtype = $2';
+      params.push(cuisine);
+    }
+    const queryString = queryString1 + queryString2 + queryString3;
     const result = await db.query(queryString, params);
+    result.rows.forEach((row) => {
+      if (row.votes === null) row.votes = 0;
+    });
     res.locals.restaurants = { [city]: result.rows };
 
     return next();
@@ -40,15 +63,13 @@ restaurantController.getRestaurants = async (req, res, next) => {
 
 // add a restaurant
 restaurantController.addRestaurant = async (req, res, next) => {
-  console.log(req.body);
   try {
-    console.log('inside of addRestaurant');
-    const { name, address, city, foodType, link } = req.body;
+    const { name, address, city, foodType, link, user_id } = req.body;
 
     const queryString = `
-    INSERT INTO resto (restoName,address,city,foodType,link,votes)
-    VALUES ( $1, $2, $3, $4, $5, 0);`;
-    const params = [name, address, city, foodType, link];
+    INSERT INTO resto (restoName, address, city, foodType, link, add_by_user)
+    VALUES ( $1, $2, $3, $4, $5, $6);`;
+    const params = [name, address, city, foodType, link, 1];
 
     const result = await db.query(queryString, params);
     // console.log(result);
@@ -62,34 +83,10 @@ restaurantController.addRestaurant = async (req, res, next) => {
   }
 };
 
-// update (votes) for a restaurant
-restaurantController.updateRestaurant = async (req, res, next) => {
-  try {
-    const { resto_id, action } = req.body;
-    if (action === 'upvote') operation = '+';
-    if (action === 'downvote') operation = '-';
-    const queryString = `
-    UPDATE resto
-    SET votes=votes${operation}1
-    WHERE resto_id=$1`;
-    const params = [resto_id];
-
-    const result = await db.query(queryString, params);
-    // res.locals.updatedRestaurant = result.rows;
-    return next();
-  } catch (err) {
-    return next({
-      log: 'Error in restaurantController.updateRestaurant: ' + err,
-      message: { err: err },
-    });
-  }
-};
-
 // delete a restaurant
 restaurantController.deleteRestaurant = async (req, res, next) => {
   try {
     const { resto_id } = req.body;
-    console.log(req.body);
     const queryString = `
     DELETE FROM resto 
     WHERE resto_id=$1`;

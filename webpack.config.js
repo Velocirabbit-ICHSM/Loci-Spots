@@ -11,6 +11,7 @@ const config = {
     publicPath: "/",
   },
   devServer: {
+    historyApiFallback: true,
     static: {
       directory: path.join(__dirname, "./build"),
       publicPath: "/",
@@ -18,6 +19,7 @@ const config = {
     // port: 3000,
     proxy: {
       "/api": "http://localhost:3000",
+      "/auth": "http://localhost:3000"
     },
   },
   module: {
